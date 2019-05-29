@@ -30,7 +30,7 @@ app.listen(PORT, () => {
 app.get('/', (req, res) => {
     table
         .then(() => {
-            return client.query('select username from users')
+            return client.query('select * from users')
         }).then((result) => {
             result.rows.map(row => {
                 return res.send(row)
@@ -38,13 +38,8 @@ app.get('/', (req, res) => {
         }).catch((error => {
             console.log(error)
         }))
-
-
-
 })
 
 app.get('/helloworld', (req, res) => {
     return res.send(" Hello World!")
-
-
 })
