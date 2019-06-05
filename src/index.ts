@@ -1,14 +1,24 @@
 import express from 'express'
 import dotenv from 'dotenv'
-import { Client } from 'pg'
+import { Client, ConnectionConfig } from 'pg'
 
 
 const app = express()
+
 dotenv.config()
 
 const PORT = process.env.PORT
 
-const client = new Client()
+const config: ConnectionConfig = {
+    user: process.env.PGUSER,
+    host: process.env.PGHOST,
+    database: process.env.PGDATABASE,
+    password: process.env.PGPASSWORD,
+    port: Number(process.env.PGPORT),
+}
+
+const client = new Client(config)
+
 const table = client.connect()
 
 
