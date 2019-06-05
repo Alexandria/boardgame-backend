@@ -37,17 +37,13 @@ app.listen(PORT, () => {
     console.log(`Running on port ${PORT}`)
 })
 
-app.get('/', (req, res) => {
-    table
-        .then(() => {
-            return client.query('select * from users')
-        }).then((result) => {
-            result.rows.map(row => {
-                return res.send(row)
-            })
-        }).catch((error => {
-            console.log(error)
-        }))
+app.get('/', async function (req, res) {
+    await table
+    const result = await client.query('select * from users')
+    result.rows.map(row => {
+        return res.send(row)
+    })
+
 })
 
 app.get('/helloworld', (req, res) => {
