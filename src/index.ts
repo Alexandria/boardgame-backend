@@ -1,14 +1,24 @@
 import express from 'express'
 import dotenv from 'dotenv'
-import { Client } from 'pg'
+import { Client, ConnectionConfig } from 'pg'
 
 
 const app = express()
+
 dotenv.config()
 
 const PORT = process.env.PORT
 
-const client = new Client()
+const config: ConnectionConfig = {
+    user: process.env.PGUSER,
+    host: process.env.PGHOST,
+    database: process.env.PGDATABASE,
+    password: process.env.PGPASSWORD,
+    port: Number(process.env.PGPORT),
+}
+
+const client = new Client(config)
+
 const table = client.connect()
 
 
@@ -27,18 +37,15 @@ app.listen(PORT, () => {
     console.log(`Running on port ${PORT}`)
 })
 
-app.get('/', (req, res) => {
-    table
-        .then(() => {
-            return client.query('select username from users')
-        }).then((result) => {
-            result.rows.map(row => {
-                return res.send(row)
-            })
-        }).catch((error => {
-            console.log(error)
-        }))
+app.get('/', async function (req, res) {
+    await table
+    const result = await client.query('select * from users')
+    result.rows.map(row => {
+        return res.send(row)
+    })
 
+})
 
-
+app.get('/helloworld', (req, res) => {
+    return res.send(" Hello World!")
 })
