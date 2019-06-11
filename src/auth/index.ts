@@ -7,7 +7,11 @@ import { table, client } from '../index'
 
 export const router = express.Router()
 
-router.use(cors())
+router.use(cors(
+    {
+        credentials: true
+    }
+))
 router.use(express.json())
 
 router.get('/', (req, res) => {
@@ -55,7 +59,7 @@ router.post('/login', async function (req, res, next) {
         userId: queryResultLogin.rows[0].user_id
     }, 'secret',
         {
-            expiresIn: '30s'
+            expiresIn: '1hr'
         }
     )
     res.json({
