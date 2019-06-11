@@ -20,21 +20,16 @@ router.post('/login', async function (req, res, next) {
         })
 
     })
-    table
+
+    await table
+
     const selectEmail = "select * from users where email = $1"
     const emailParams = [req.body.email]
 
     const queryResult =
         await client.query(selectEmail, emailParams)
 
-    if (queryResult.rows.length <= 0) {
-        // send an error to the client
-        res.status(401).json({
-            message: 'Authorization Failed ⛔️'
-        })
-    }
-
-    if (queryResult.rows[0].password === req.body.password) {
+    if (!(queryResult.rows.length <= 0) && (queryResult.rows[0].password === req.body.password)) {
         const token = jwt.sign({
             email: queryResult.rows[0].email,
             userId: queryResult.rows[0].user_id

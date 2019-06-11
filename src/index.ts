@@ -34,7 +34,7 @@ app.listen(PORT, () => {
 })
 
 app.get('/', async function (req, res) {
-    table
+    await table
     const result = await client.query('select * from users').catch(error => console.log(error))
     if (result) {
         result.rows.map(row => {
