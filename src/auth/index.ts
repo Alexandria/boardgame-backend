@@ -32,40 +32,38 @@ router.post('/login', async function (req, res, next) {
     const selectEmail = "select * from users where email = $1"
     const emailParams = [req.body.email]
 
-    const queryResultEmail =
+    const queryResult =
         await client.query(selectEmail, emailParams)
 
-    if (queryResultEmail.rows.length <= 0) {
+    if (queryResult.rows.length <= 0) {
         // send an error to the client
         res.status(401).json({
-            message: 'Email not found'
+            message: 'Authorization Failed ⛔️'
         })
     }
 
-    const selectLogin = "select * from users where email = $1 and password = $2"
-    const loginParams = [req.body.email, req.body.password]
-    const queryResultLogin =
-        await client.query(selectLogin, loginParams)
-
-    if (queryResultLogin.rows.length <= 0) {
-        //send error to the clien
+    if (queryResult.rows[0].password === req.body.password) {
+        const token = jwt.sign({
+            email: queryResult.rows[0].email,
+            userId: queryResult.rows[0].user_id
+        }, 'secret',
+            {
+                expiresIn: '1hr'
+            }
+        )
+        res.json({
+            token,
+            message: 'You are logged in! ✅'
+        })
+    } else {
         res.status(401).json({
-            message: 'User Not Found'
-        });
+            message: 'Authorization Failed ⛔️'
+        })
     }
 
-    const token = jwt.sign({
-        email: queryResultLogin.rows[0].email,
-        userId: queryResultLogin.rows[0].user_id
-    }, 'secret',
-        {
-            expiresIn: '1hr'
-        }
-    )
-    res.json({
-        token,
-        message: 'You are logged in! ✅'
-    })
+
+
+
 
 })
 
