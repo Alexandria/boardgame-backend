@@ -7,13 +7,6 @@ import { table, client } from '../index'
 
 export const router = express.Router()
 
-router.use(cors(
-    {
-        credentials: true
-    }
-))
-router.use(express.json())
-
 router.get('/', (req, res) => {
     res.json({
         message: '🗝'
@@ -27,8 +20,7 @@ router.post('/login', async function (req, res, next) {
         })
 
     })
-
-    await table
+    table
     const selectEmail = "select * from users where email = $1"
     const emailParams = [req.body.email]
 

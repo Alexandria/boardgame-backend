@@ -25,7 +25,7 @@ export const table = client.connect()
 
 
 
-app.use(cors())
+app.use(cors({ credentials: true }))
 app.use(express.json())
 app.use('/auth', router)
 
@@ -34,7 +34,7 @@ app.listen(PORT, () => {
 })
 
 app.get('/', async function (req, res) {
-    await table
+    table
     const result = await client.query('select * from users').catch(error => console.log(error))
     if (result) {
         result.rows.map(row => {
