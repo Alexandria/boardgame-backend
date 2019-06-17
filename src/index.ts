@@ -1,6 +1,8 @@
-import express from 'express'
+import express, { Router } from 'express'
 import dotenv from 'dotenv'
 import { Client, ConnectionConfig } from 'pg'
+import cors from 'cors'
+import { router } from './auth'
 
 
 const app = express()
@@ -17,21 +19,15 @@ const config: ConnectionConfig = {
     port: Number(process.env.PGPORT),
 }
 
-const client = new Client(config)
+export const client = new Client(config)
 
-const table = client.connect()
+export const table = client.connect()
 
 
-app.use(function (req, res, next) {
-    // security 
-    //https://enable-cors.org/server_expressjs.html
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    res.header("Access-Control-Allow-Methods", "*");
-    next();
-});
+
+app.use(cors({ credentials: true }))
 app.use(express.json())
-
+app.use('/auth', router)
 
 app.listen(PORT, () => {
     console.log(`Running on port ${PORT}`)
