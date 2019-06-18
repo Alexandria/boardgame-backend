@@ -1,9 +1,7 @@
 import express, { Request } from 'express'
-import cors from 'cors'
-import * as yup from 'yup'
 import * as jwt from 'jsonwebtoken'
-
 import { table, client } from '../index'
+import { validateLogin } from '../utils/validateLogin'
 
 export const router = express.Router()
 
@@ -12,7 +10,6 @@ router.get('/', (req, res) => {
         message: '🗝'
     })
 })
-
 router.post('/login', async function (req, res, next) {
     const isValidInput = await validateLogin(req.body).catch(err => {
         res.status(401).json({
@@ -48,23 +45,8 @@ router.post('/login', async function (req, res, next) {
         })
     }
 
-
-
-
-
 })
 
-const loginSchema = yup.object().shape({
-    email: yup.string()
-        .email()
-        .min(5)
-        .required("You must enter a valid email address"),
-    password: yup.string().min(5).required("You must enter a password")
-})
-
-const validateLogin = (login: Request) => {
-    return loginSchema.validate(login)
-}
 
 
 
