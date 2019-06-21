@@ -2,6 +2,7 @@ import {
     QueryInterface,
     DataTypes
 } from 'sequelize';
+import { User } from '../models/user'
 
 export = {
     up: (queryInterface: QueryInterface) => {
@@ -19,7 +20,6 @@ export = {
             isborrowed: {
                 type: DataTypes.BOOLEAN
             },
-
             createdAt: {
                 allowNull: false,
                 type: DataTypes.DATE

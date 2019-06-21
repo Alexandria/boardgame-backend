@@ -6,7 +6,7 @@ import { sequelize } from './index'
 import { users_brdGames } from './users_brdgames';
 
 
-export interface BrGameAttributes {
+export interface BrGameAttributes extends Model {
     brd_game_id?: number
     name: string;
     numOfPlayers: string;
@@ -25,7 +25,7 @@ type BrdGameModel = typeof Model & {
 }
 
 
-export const brdGame = <BrdGameModel>sequelize.define('brdGame', {
+export const BrdGame = <BrdGameModel>sequelize.define('brdGame', {
     brdGame_id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -43,4 +43,3 @@ export const brdGame = <BrdGameModel>sequelize.define('brdGame', {
     img: DataTypes.STRING
 });
 
-brdGame.hasMany(users_brdGames)

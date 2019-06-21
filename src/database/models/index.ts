@@ -3,9 +3,6 @@
 import fs from 'fs'
 import path from 'path'
 import { Sequelize } from 'sequelize'
-import { user } from './user'
-import { brdGame } from './brdGame'
-import { users_brdGames } from './users_brdgames'
 
 const basename = path.basename(__filename);
 
@@ -26,14 +23,12 @@ fs
     db[model.name] = model;
   });
 //Important: creates associations based on associations defined in associate function in the model files
-Object.keys(db).forEach(modelName => {
-  if (db[modelName].associate) {
-    db[modelName].associate(db);
-  }
-});
+// Object.keys(db).forEach(modelName => {
+//   if (db[modelName].associate) {
+//     db[modelName].associate(db);
+//   }
+// });
 
-user.hasMany(users_brdGames)
-brdGame.hasMany(users_brdGames)
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
