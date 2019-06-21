@@ -1,6 +1,14 @@
-{
+import dotenv from 'dotenv'
+
+dotenv.config()
+
+const PORT = process.env.PGPORT
+const DATABASE = process.env.PGDATABASE
+
+console.log(PORT, ' ', DATABASE)
+module.exports = {
   "development": {
-    "url": "postgres://localhost:5433/bgdata",
+    "url": "postgres://localhost:" + PORT + "/" + DATABASE,
     "dialect": "postgres"
   },
   "test": {

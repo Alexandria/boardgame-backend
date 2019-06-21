@@ -3,9 +3,7 @@
 import fs from 'fs'
 import path from 'path'
 import { Sequelize } from 'sequelize'
-import { user } from './user'
-import { brdGame } from './brdGame'
-import { users_brdGames } from './users_brdgames'
+import dotenv from 'dotenv'
 
 const basename = path.basename(__filename);
 
@@ -13,8 +11,12 @@ interface DB {
   [key: string]: any
 }
 const db: DB = {};
+dotenv.config()
 
-export const sequelize = new Sequelize('postgres://localhost:5433/bgdata');
+const PORT = process.env.PGPORT
+const DATABASE = process.env.PGDATABASE
+
+export const sequelize = new Sequelize(`postgres://localhost:${PORT}/${DATABASE}`);
 //grabs all the models in your models folder, adds them to the db object
 fs
   .readdirSync(__dirname)
@@ -26,14 +28,12 @@ fs
     db[model.name] = model;
   });
 //Important: creates associations based on associations defined in associate function in the model files
-Object.keys(db).forEach(modelName => {
-  if (db[modelName].associate) {
-    db[modelName].associate(db);
-  }
-});
+// Object.keys(db).forEach(modelName => {
+//   if (db[modelName].associate) {
+//     db[modelName].associate(db);
+//   }
+// });
 
-user.hasMany(users_brdGames)
-brdGame.hasMany(users_brdGames)
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;

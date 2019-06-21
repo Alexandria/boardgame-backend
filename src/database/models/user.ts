@@ -6,17 +6,20 @@ import { sequelize } from './index'
 import { users_brdGames } from './users_brdgames'
 
 export interface UserAttributes extends Model {
-    user_id?: number
+    user_id: number
     email: string;
     password: string;
 
+    createdAt: Date
+    updatedAt: Date
+
 }
 
-type UserModel = typeof Model & {
+export type UserModel = typeof Model & {
     new(): UserAttributes
 }
 
-export const user = <UserModel>sequelize.define('user', {
+export const User = <UserModel>sequelize.define('user', {
     user_id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
