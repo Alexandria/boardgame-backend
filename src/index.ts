@@ -1,47 +1,32 @@
 import express, { Router } from 'express'
 import dotenv from 'dotenv'
-import { Client, ConnectionConfig } from 'pg'
 import cors from 'cors'
 import { router } from './auth'
-
-
-const app = express()
+import { Users_BrdGames } from './database/models/users_brdgames'
+import { User } from './database/models/user'
 
 dotenv.config()
 
-const PORT = process.env.PORT
-
-const config: ConnectionConfig = {
-    user: process.env.PGUSER,
-    host: process.env.PGHOST,
-    database: process.env.PGDATABASE,
-    password: process.env.PGPASSWORD,
-    port: Number(process.env.PGPORT),
-}
-
-export const client = new Client(config)
-
-export const table = client.connect()
-
-
-
+const app = express()
 app.use(cors({ credentials: true }))
 app.use(express.json())
 app.use('/auth', router)
 
+const PORT = process.env.PORT
 app.listen(PORT, () => {
     console.log(`Running on port ${PORT}`)
 })
 
 app.get('/', async function (req, res) {
-    await table
-    const result = await client.query('select * from users').catch(error => console.log(error))
-    if (result) {
-        result.rows.map(row => {
-            return res.send(row)
+    User.findAll().then(result => {
+        res.status(200).json({
+            message: result
         })
-    }
-
+    }).catch(err => {
+        res.json({
+            message: err.message
+        })
+    })
 
 })
 

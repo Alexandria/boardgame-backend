@@ -41,7 +41,7 @@ type BrdGameModel = typeof Model & {
 }
 
 
-export const BrdGame = <BrdGameModel>sequelize.define('brdGame', {
+export const BrdGame = <BrdGameModel>sequelize.define('BrdGames', {
     brdGame_id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -59,4 +59,4 @@ export const BrdGame = <BrdGameModel>sequelize.define('brdGame', {
     img: DataTypes.STRING
 });
 
-BrdGame.belongsToMany(User, { through: Users_BrdGames })
+//BrdGame.belongsToMany(User, { through: Users_BrdGames })

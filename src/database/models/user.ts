@@ -32,7 +32,7 @@ export type UserModel = typeof Model & {
     new(): UserAttributes
 }
 
-export const User = <UserModel>sequelize.define('user', {
+export const User = <UserModel>sequelize.define('Users', {
     user_id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,

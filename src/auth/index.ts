@@ -1,7 +1,7 @@
-import express, { Request } from 'express'
+import express from 'express'
 import * as jwt from 'jsonwebtoken'
-import { table, client } from '../index'
 import { validateLogin } from '../utils/validateLogin'
+import { User } from '../database/models/user'
 
 export const router = express.Router()
 
@@ -18,21 +18,23 @@ router.post('/login', async function (req, res, next) {
 
     })
 
-    await table
+    const queryResult = await User.findAll({
+        where: {
+            email: req.body.email
+        }
+    }).catch(err => {
 
-    const selectEmail = "select * from users where email = $1"
-    const emailParams = [req.body.email]
+        console.log(err)
+        return []
+    })
 
-    const queryResult =
-        await client.query(selectEmail, emailParams)
-
-    if (!(queryResult.rows.length <= 0) && (queryResult.rows[0].password === req.body.password)) {
+    if (queryResult.length > 0 && queryResult[0].password === req.body.password) {
         const token = jwt.sign({
-            email: queryResult.rows[0].email,
-            userId: queryResult.rows[0].user_id
+            email: queryResult[0].email,
+            userId: queryResult[0].user_id
         }, 'secret',
             {
-                expiresIn: '1hr'
+                expiresIn: '30s'
             }
         )
         res.json({
