@@ -26,13 +26,13 @@
 
 Below are some queries to run to test the database
 
-`select bg.name  
+`select bg.name`  
 
-from public."BrdGames" bg
+`from public."BrdGames" bg`
 
-left join public."Users_BrdGames" usrbg on usrbg."brdGameId" = bg."brdGame_id"
+`left join public."Users_BrdGames" usrbg on usrbg."brdGameId" = bg."brdGame_id"`
 
-where usrbg."userId" = 1;`
+`where usrbg."userId" = 1;`
 
 This will give you all of the boardgames that a user has by user_id
 
