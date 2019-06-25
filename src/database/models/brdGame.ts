@@ -1,12 +1,18 @@
 import {
     Model,
-    DataTypes
+    DataTypes,
+    BelongsToManyGetAssociationsMixin,
+    BelongsToManyAddAssociationMixin,
+    BelongsToManyHasAssociationMixin,
+    BelongsToManyCountAssociationsMixin,
+    BelongsToManyCreateAssociationMixin
 } from 'sequelize';
 import { sequelize } from './index'
-import { users_brdGames } from './users_brdgames';
+import { UserAttributes, User } from './user'
+import { Users_BrdGames } from './users_brdgames';
 
 
-export interface BrGameAttributes extends Model {
+export interface BrdGameAttributes extends Model {
     brd_game_id?: number
     name: string;
     numOfPlayers: string;
@@ -18,10 +24,20 @@ export interface BrGameAttributes extends Model {
     designer?: string;
     img?: string;
 
+    createdAt: Date
+    updatedAt: Date
+
+    getUser: BelongsToManyGetAssociationsMixin<UserAttributes>; // Note the null assertions!
+    addUser: BelongsToManyAddAssociationMixin<UserAttributes, number>;
+    hasUser: BelongsToManyHasAssociationMixin<UserAttributes, number>;
+    countUser: BelongsToManyCountAssociationsMixin;
+    createUser: BelongsToManyCreateAssociationMixin<UserAttributes>;
+
+
 }
 
 type BrdGameModel = typeof Model & {
-    new(): BrGameAttributes
+    new(): BrdGameAttributes
 }
 
 
@@ -43,3 +59,4 @@ export const BrdGame = <BrdGameModel>sequelize.define('brdGame', {
     img: DataTypes.STRING
 });
 
+BrdGame.belongsToMany(User, { through: Users_BrdGames })

@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "tsc": "tsc",
-    "dev": "ts-node-dev --respawn --transpileOnly ./src",
-    "prod": "tsc && node ./build/index.js"
+    "tsc": "rm -r ./build && tsc",
+    "dev": "ts-node-dev --respawn --transpileOnly ./src/index.ts",
+    "prod": "tsc && node ./src/index.ts"
   },
   "author": "",
   "license": "ISC",

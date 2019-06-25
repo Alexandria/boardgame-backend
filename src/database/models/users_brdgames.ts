@@ -1,12 +1,13 @@
 import {
     Model,
     DataTypes
+
 } from 'sequelize';
 import { sequelize } from './index'
-import { User } from './user'
-import { BrdGame } from './brdGame'
 
-export interface UsersBGAttributes {
+
+
+export interface UsersBGAttributes extends Model {
     rating?: number
     isborrowed?: boolean;
 
@@ -17,24 +18,25 @@ type UsersBGModel = typeof Model & {
 }
 
 
-export const users_brdGames = <UsersBGModel>sequelize.define('users_brdGames', {
+export const Users_BrdGames = <UsersBGModel>sequelize.define('users_brdGames', {
     rating: DataTypes.INTEGER,
     isborrowed: DataTypes.BOOLEAN,
-    users_id: {
+    userId: {
         type: DataTypes.INTEGER,
         //FK relationship(hasMany) with `User`
         references: {
-            model: User,
+            model: "Users",
             key: 'user_id'
         }
     },
-    brdGame_id: {
+    brdGameId: {
         type: DataTypes.INTEGER,
-        //FK relationship(hasMany) with `BrdGame`
+        //FK relationship(hasMany) with `User`
         references: {
-            model: BrdGame,
+            model: "BrdGames",
             key: 'brdGame_id'
         }
-    }
+    },
 });
+
 

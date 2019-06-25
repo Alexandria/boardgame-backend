@@ -6,8 +6,8 @@ import {
 
 export = {
     up: (queryInterface: QueryInterface) => {
-        return queryInterface.createTable('users', {
-            users_id: {
+        return queryInterface.createTable('Users', {
+            user_id: {
                 allowNull: false,
                 autoIncrement: true,
                 primaryKey: true,
@@ -36,6 +36,6 @@ export = {
     },
 
     down: (queryInterface: QueryInterface) => {
-        return queryInterface.dropTable('users');
+        return queryInterface.dropTable('Users');
     }
 };

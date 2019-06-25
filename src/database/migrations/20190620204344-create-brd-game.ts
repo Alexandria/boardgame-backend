@@ -5,7 +5,7 @@ import {
 
 export = {
     up: (queryInterface: QueryInterface) => {
-        return queryInterface.createTable('brdGame', {
+        return queryInterface.createTable('BrdGames', {
             brdGame_id: {
                 type: DataTypes.INTEGER,
                 autoIncrement: true,
@@ -66,6 +66,6 @@ export = {
     },
 
     down: (queryInterface: QueryInterface) => {
-        return queryInterface.dropTable('brdGame');
+        return queryInterface.dropTable('BrdGames');
     }
 };

@@ -13,40 +13,54 @@ module.exports = {
             isBetaMember: false
           }], {});
         */
-        return queryInterface.bulkInsert('Users', [{
-                email: 'admin@gmail.com',
-                password: 'password',
+        return queryInterface.bulkInsert('Users_BrdGames', [
+            {
+                rating: 4,
+                isborrowed: false,
                 createdAt: dateTime_1.curDateTime,
-                updatedAt: dateTime_1.curDateTime
-            }, {
-                email: 'sammy@gmail.com',
-                password: 'password',
-                createdAt: dateTime_1.curDateTime,
-                updatedAt: dateTime_1.curDateTime
+                updatedAt: dateTime_1.curDateTime,
+                userId: 1,
+                brdGameId: 1
             },
             {
-                email: 'Tatiana@gmail.com',
-                password: 'password',
+                rating: 2,
+                isborrowed: false,
                 createdAt: dateTime_1.curDateTime,
-                updatedAt: dateTime_1.curDateTime
+                updatedAt: dateTime_1.curDateTime,
+                userId: 3,
+                brdGameId: 1
             },
             {
-                email: 'Mikey@gmail.com',
-                password: 'password',
+                rating: 1,
+                isborrowed: false,
                 createdAt: dateTime_1.curDateTime,
-                updatedAt: dateTime_1.curDateTime
+                updatedAt: dateTime_1.curDateTime,
+                userId: 1,
+                brdGameId: 2
             },
             {
-                email: 'chardea@gmail.com',
-                password: 'password',
+                rating: 2,
+                isborrowed: false,
                 createdAt: dateTime_1.curDateTime,
-                updatedAt: dateTime_1.curDateTime
+                updatedAt: dateTime_1.curDateTime,
+                userId: 4,
+                brdGameId: 1
             },
             {
-                email: 'lily@gmail.com',
-                password: 'password',
+                rating: 4,
+                isborrowed: false,
                 createdAt: dateTime_1.curDateTime,
-                updatedAt: dateTime_1.curDateTime
+                updatedAt: dateTime_1.curDateTime,
+                userId: 2,
+                brdGameId: 1
+            },
+            {
+                rating: 5,
+                isborrowed: false,
+                createdAt: dateTime_1.curDateTime,
+                updatedAt: dateTime_1.curDateTime,
+                userId: 6,
+                brdGameId: 2
             },
         ], {});
     },
@@ -58,6 +72,6 @@ module.exports = {
           Example:
           return queryInterface.bulkDelete('Person', null, {});
         */
-        return queryInterface.bulkDelete('Users', {});
+        return queryInterface.bulkDelete('Users_BrdGames', {});
     }
 };

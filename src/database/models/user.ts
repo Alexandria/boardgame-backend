@@ -1,9 +1,15 @@
 import {
     Model,
-    DataTypes
+    DataTypes,
+    BelongsToManyGetAssociationsMixin,
+    BelongsToManyAddAssociationMixin,
+    BelongsToManyHasAssociationMixin,
+    BelongsToManyCountAssociationsMixin,
+    BelongsToManyCreateAssociationMixin
 } from 'sequelize';
 import { sequelize } from './index'
-import { users_brdGames } from './users_brdgames'
+import { BrdGameAttributes, BrdGame } from './brdGame'
+import { Users_BrdGames } from './users_brdgames';
 
 export interface UserAttributes extends Model {
     user_id: number
@@ -12,6 +18,13 @@ export interface UserAttributes extends Model {
 
     createdAt: Date
     updatedAt: Date
+
+    getBg: BelongsToManyGetAssociationsMixin<BrdGameAttributes>; // Note the null assertions!
+    addBg: BelongsToManyAddAssociationMixin<BrdGameAttributes, number>;
+    hasBg: BelongsToManyHasAssociationMixin<BrdGameAttributes, number>;
+    countBg: BelongsToManyCountAssociationsMixin;
+    createBg: BelongsToManyCreateAssociationMixin<BrdGameAttributes>;
+
 
 }
 
@@ -32,6 +45,6 @@ export const User = <UserModel>sequelize.define('user', {
 
 
 });
-
+User.belongsToMany(BrdGame, { through: Users_BrdGames })
 
 
