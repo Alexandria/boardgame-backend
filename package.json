@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "tsc": "tsc",
+    "tsc": "rm -r ./build && tsc",
     "dev": "ts-node-dev --respawn --transpileOnly ./src/index.ts",
-    "prod": "tsc && node ./build/index.js"
+    "prod": "tsc && node ./src/index.ts"
   },
   "author": "",
   "license": "ISC",
@@ -15,6 +15,7 @@
     "@types/dotenv": "^6.1.1",
     "@types/jsonwebtoken": "^8.3.2",
     "@types/pg": "^7.4.14",
+    "@types/sequelize": "^4.28.3",
     "@types/yup": "^0.26.14",
     "bcrypt": "^3.0.6",
     "cors": "^2.8.5",
@@ -22,6 +23,8 @@
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "pg": "^7.11.0",
+    "sequelize": "^5.8.10",
+    "sequelize-cli-typescript": "^3.2.0-c",
     "ts-node-dev": "^1.0.0-pre.39",
     "typescript": "^3.4.5",
     "yup": "^0.27.0"
