@@ -1,50 +1,43 @@
 import {
-    Model,
-    DataTypes,
-    BelongsToManyGetAssociationsMixin,
-    BelongsToManyAddAssociationMixin,
-    BelongsToManyHasAssociationMixin,
-    BelongsToManyCountAssociationsMixin,
-    BelongsToManyCreateAssociationMixin
-} from 'sequelize';
-import { sequelize } from './index'
-import { BrdGameAttributes, BrdGame } from './brdGame'
-import { Users_BrdGames } from './users_brdgames';
+  Model,
+  DataTypes,
+  BelongsToManyGetAssociationsMixin,
+  BelongsToManyAddAssociationMixin,
+  BelongsToManyHasAssociationMixin,
+  BelongsToManyCountAssociationsMixin,
+  BelongsToManyCreateAssociationMixin
+} from "sequelize";
+import { sequelize } from "./index";
+import { BrdGameAttributes, BrdGame } from "./brdGame";
+import { UsersBrdGames } from "./usersBrdgames";
 
 export interface UserAttributes extends Model {
-    user_id: number
-    email: string;
-    password: string;
+  userId: number;
+  email: string;
+  password: string;
 
-    createdAt: Date
-    updatedAt: Date
+  createdAt: Date;
+  updatedAt: Date;
 
-    getBg: BelongsToManyGetAssociationsMixin<BrdGameAttributes>; // Note the null assertions!
-    addBg: BelongsToManyAddAssociationMixin<BrdGameAttributes, number>;
-    hasBg: BelongsToManyHasAssociationMixin<BrdGameAttributes, number>;
-    countBg: BelongsToManyCountAssociationsMixin;
-    createBg: BelongsToManyCreateAssociationMixin<BrdGameAttributes>;
-
-
+  getBg: BelongsToManyGetAssociationsMixin<BrdGameAttributes>; // Note the null assertions!
+  addBg: BelongsToManyAddAssociationMixin<BrdGameAttributes, number>;
+  hasBg: BelongsToManyHasAssociationMixin<BrdGameAttributes, number>;
+  countBg: BelongsToManyCountAssociationsMixin;
+  createBg: BelongsToManyCreateAssociationMixin<BrdGameAttributes>;
 }
 
 export type UserModel = typeof Model & {
-    new(): UserAttributes
-}
+  new (): UserAttributes;
+};
 
-export const User = <UserModel>sequelize.define('Users', {
-    user_id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        allowNull: false,
-        primaryKey: true
-
-    },
-    email: DataTypes.STRING,
-    password: DataTypes.STRING
-
-
+export const User = <UserModel>sequelize.define("Users", {
+  userId: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    allowNull: false,
+    primaryKey: true
+  },
+  email: DataTypes.STRING,
+  password: DataTypes.STRING
 });
-User.belongsToMany(BrdGame, { through: Users_BrdGames })
-
-
+User.belongsToMany(BrdGame, { through: UsersBrdGames });
