@@ -13,23 +13,23 @@ app.use("/auth", router);
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
-    console.log(`Running on port ${PORT}`);
+  console.log(`Running on port ${PORT}`);
 });
 
 app.get("/", async function(req, res) {
-    User.findAll()
-        .then(result => {
-            res.status(200).json({
-                message: result
-            });
-        })
-        .catch(err => {
-            res.json({
-                message: err.message
-            });
-        });
+  User.findAll()
+    .then(result => {
+      res.status(200).json({
+        message: result
+      });
+    })
+    .catch(err => {
+      res.json({
+        message: err.message
+      });
+    });
 });
 
 app.get("/helloworld", (req, res) => {
-    return res.send(" Hello World!");
+  return res.send(" Hello World!");
 });
