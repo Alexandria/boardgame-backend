@@ -59,14 +59,14 @@ router.post("/login", async function(req, res) {
   }
 });
 
-router.post("/signin", async function(req, res) {
+router.post("/signup", async function(req, res) {
   await validateLogin(req.body).catch(() => {
     res.status(401).json({
       message: "Authorization Faild: Invalid information ⛔️"
     });
   });
 
-  await User.findAll({
+  User.findAll({
     where: {
       email: req.body.email
     }
