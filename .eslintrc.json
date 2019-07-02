@@ -25,13 +25,6 @@
     "extraFileExtensions": [".vue"]
   },
 
-  "settings": {
-    "import/resolver": {
-      "node": {
-        "paths": ["./src"]
-      }
-    }
-  },
   "rules": {
     "@typescript-eslint/no-angle-bracket-type-assertion": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
@@ -39,6 +32,8 @@
     "import/prefer-default-export": "off",
     "func-names": "off",
     "import/no-unresolved": "off",
-    "prefer-destructuring": "off"
+    "prefer-destructuring": "off",
+    "no-plusplus": "off",
+    "@typescript-eslint/no-var-requires": "off"
   }
 }
