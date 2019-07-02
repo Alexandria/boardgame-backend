@@ -30,7 +30,7 @@ export = {
         // FK relationship(hasMany) with `User`
         references: {
           model: "Users",
-          key: "user_id"
+          key: "userId"
         }
       },
       brdGameId: {
@@ -38,7 +38,7 @@ export = {
         // FK relationship(hasMany) with `User`
         references: {
           model: "BrdGames",
-          key: "brdGame_id"
+          key: "brdGameId"
         }
       }
     });
