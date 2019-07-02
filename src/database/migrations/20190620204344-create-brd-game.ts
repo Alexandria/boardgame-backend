@@ -46,7 +46,7 @@ export = {
       },
 
       img: {
-        type: DataTypes.STRING
+        type: DataTypes.BLOB
       },
 
       createdAt: {

@@ -20,7 +20,7 @@ export interface BrdGameAttributes extends Model {
   category?: string;
   artist?: string;
   designer?: string;
-  img?: string;
+  img?: Blob;
 
   createdAt: Date;
   updatedAt: Date;
@@ -51,7 +51,7 @@ export const BrdGame = <BrdGameModel>sequelize.define("BrdGames", {
   category: DataTypes.STRING,
   artist: DataTypes.STRING,
   designer: DataTypes.STRING,
-  img: DataTypes.STRING
+  img: DataTypes.BLOB
 });
 
 // BrdGame.belongsToMany(User, { through: Users_BrdGames })
