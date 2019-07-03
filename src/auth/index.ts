@@ -3,6 +3,9 @@ import bcrypt from "bcrypt";
 import { validateLogin } from "../utils/validateLogin";
 import { User } from "../database/models/user";
 import createTkn from "../utils/createTkn";
+import { verifyToken } from "../middleware/verifyToken";
+import { BrdGame } from "../database/models/brdGame";
+import { UsersBrdgames } from "../database/models/usersBrdgames";
 
 export const router = express.Router();
 
@@ -10,6 +13,31 @@ router.get("/", (req, res) => {
   res.json({
     message: "🗝"
   });
+});
+
+router.get("/home/:id", verifyToken, async function(req, res) {
+  const userBg = await BrdGame.findAll({
+    include: [
+      {
+        model: UsersBrdgames,
+        where: { userId: req.params.id },
+        required: false
+      }
+    ]
+  })
+    .then(result => {
+      res.status(200).json({
+        result
+      });
+      return result;
+    })
+    .catch(err => {
+      console.log(err);
+    });
+
+  console.log(userBg);
+
+  //`select bg.name``from public."BrdGames" bg``left join public."Users_BrdGames" usrbg on usrbg."brdGameId" = bg."brdGame_id"``where usrbg."userId" = 1;`;
 });
 
 router.post("/login", async function(req, res) {
@@ -33,6 +61,7 @@ router.post("/login", async function(req, res) {
     });
 
   if (queryResult) {
+    console.log("QR======>", queryResult.password);
     bcrypt
       .compare(req.body.password, queryResult.password)
       .then(isPassword => {
@@ -40,7 +69,8 @@ router.post("/login", async function(req, res) {
           const token = createTkn(queryResult);
           res.status(200).json({
             message: "You are logged in ✅",
-            token
+            token,
+            userId: queryResult.userId
           });
         } else {
           res.status(401).json({

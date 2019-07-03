@@ -8,7 +8,8 @@ import {
   BelongsToManyCreateAssociationMixin
 } from "sequelize";
 import { sequelize } from "./index";
-import { UserAttributes } from "./user";
+import { UserAttributes, User } from "./user";
+import { UsersBrdgames } from "./usersBrdgames";
 
 export interface BrdGameAttributes extends Model {
   brdGameId?: number;
@@ -54,4 +55,4 @@ export const BrdGame = <BrdGameModel>sequelize.define("BrdGames", {
   img: DataTypes.STRING
 });
 
-// BrdGame.belongsToMany(User, { through: Users_BrdGames })
+BrdGame.belongsToMany(User, { through: UsersBrdgames });

@@ -10,7 +10,7 @@ type UsersBGModel = typeof Model & {
   new (): UsersBGAttributes;
 };
 
-export const UsersBrdGames = <UsersBGModel>sequelize.define("Users_BrdGames", {
+export const UsersBrdgames = <UsersBGModel>sequelize.define("Users_BrdGames", {
   rating: DataTypes.INTEGER,
   isborrowed: DataTypes.BOOLEAN,
   userId: {

@@ -9,7 +9,7 @@ import {
 } from "sequelize";
 import { sequelize } from "./index";
 import { BrdGameAttributes, BrdGame } from "./brdGame";
-import { UsersBrdGames } from "./usersBrdgames";
+import { UsersBrdgames } from "./usersBrdgames";
 
 export interface UserAttributes extends Model {
   userId: number;
@@ -40,4 +40,4 @@ export const User = <UserModel>sequelize.define("Users", {
   email: DataTypes.STRING,
   password: DataTypes.STRING
 });
-User.belongsToMany(BrdGame, { through: UsersBrdGames });
+User.belongsToMany(BrdGame, { through: UsersBrdgames });
