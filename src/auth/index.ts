@@ -6,7 +6,7 @@ import createTkn from "../utils/createTkn";
 import { verifyToken } from "../middleware/verifyToken";
 import { BrdGame } from "../database/models/brdGame";
 import { UsersBrdgames } from "../database/models/usersBrdgames";
-
+import { sequelize } from "../database/models/index";
 export const router = express.Router();
 
 router.get("/", (req, res) => {
@@ -16,28 +16,12 @@ router.get("/", (req, res) => {
 });
 
 router.get("/home/:id", verifyToken, async function(req, res) {
-  const userBg = await BrdGame.findAll({
-    include: [
-      {
-        model: UsersBrdgames,
-        where: { userId: req.params.id },
-        required: false
-      }
-    ]
-  })
-    .then(result => {
-      res.status(200).json({
-        result
-      });
-      return result;
-    })
-    .catch(err => {
-      console.log(err);
-    });
+  const querySelect = `select *from public."BrdGames" bg left join public."Users_BrdGames" usrbg on usrbg."brdGameId" = bg."brdGameId" where usrbg."userId" = ${req.params.id};`;
 
-  console.log(userBg);
+  const result = await sequelize.query(querySelect);
 
-  //`select bg.name``from public."BrdGames" bg``left join public."Users_BrdGames" usrbg on usrbg."brdGameId" = bg."brdGame_id"``where usrbg."userId" = 1;`;
+  res.status(200).json({ result: result[0] });
+  //`select bg.name from public."BrdGames" bg left join public."Users_BrdGames" usrbg on usrbg."brdGameId" = bg."brdGame_id" where usrbg."userId" = 1;`;
 });
 
 router.post("/login", async function(req, res) {

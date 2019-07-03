@@ -25,12 +25,6 @@ export interface BrdGameAttributes extends Model {
 
   createdAt: Date;
   updatedAt: Date;
-
-  getUser: BelongsToManyGetAssociationsMixin<UserAttributes>; // Note the null assertions!
-  addUser: BelongsToManyAddAssociationMixin<UserAttributes, number>;
-  hasUser: BelongsToManyHasAssociationMixin<UserAttributes, number>;
-  countUser: BelongsToManyCountAssociationsMixin;
-  createUser: BelongsToManyCreateAssociationMixin<UserAttributes>;
 }
 
 type BrdGameModel = typeof Model & {
@@ -54,5 +48,3 @@ export const BrdGame = <BrdGameModel>sequelize.define("BrdGames", {
   designer: DataTypes.STRING,
   img: DataTypes.STRING
 });
-
-BrdGame.belongsToMany(User, { through: UsersBrdgames });

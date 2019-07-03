@@ -28,7 +28,7 @@ Below are some queries to run to test the database
 
 `from public."BrdGames" bg`
 
-`left join public."Users_BrdGames" usrbg on usrbg."brdGameId" = bg."brdGame_id"`
+`left join public."Users_BrdGames" usrbg on usrbg."brdGameId" = bg."brdGameId"`
 
 `where usrbg."userId" = 1;`
 
