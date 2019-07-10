@@ -1,5 +1,4 @@
 import express from "express";
-import * as jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { validateLogin } from "../utils/validateLogin";
 import { User } from "../database/models/user";
