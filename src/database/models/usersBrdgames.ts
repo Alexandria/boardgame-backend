@@ -5,7 +5,9 @@ import {
   BelongsToManyAddAssociationMixin,
   BelongsToManyHasAssociationMixin,
   BelongsToManyCountAssociationsMixin,
-  BelongsToManyCreateAssociationMixin
+  BelongsToManyCreateAssociationMixin,
+  BelongsToMany,
+  Association
 } from "sequelize";
 import { sequelize } from "./index";
 import { UserAttributes, User } from "./user";
@@ -17,17 +19,17 @@ export interface UsersBGAttributes extends Model {
   userId?: number;
   brdGameId?: number;
 
-  getUser: BelongsToManyGetAssociationsMixin<UserAttributes>; // Note the null assertions!
-  addUser: BelongsToManyAddAssociationMixin<UserAttributes, number>;
-  hasUser: BelongsToManyHasAssociationMixin<UserAttributes, number>;
-  countUser: BelongsToManyCountAssociationsMixin;
-  createUser: BelongsToManyCreateAssociationMixin<UserAttributes>;
-
   getBg: BelongsToManyGetAssociationsMixin<BrdGameAttributes>; // Note the null assertions!
   addBg: BelongsToManyAddAssociationMixin<BrdGameAttributes, number>;
   hasBg: BelongsToManyHasAssociationMixin<BrdGameAttributes, number>;
   countBg: BelongsToManyCountAssociationsMixin;
   createBg: BelongsToManyCreateAssociationMixin<BrdGameAttributes>;
+
+  getUser: BelongsToManyGetAssociationsMixin<UserAttributes>; // Note the null assertions!
+  addUser: BelongsToManyAddAssociationMixin<UserAttributes, number>;
+  hasUser: BelongsToManyHasAssociationMixin<UserAttributes, number>;
+  countUser: BelongsToManyCountAssociationsMixin;
+  createUser: BelongsToManyCreateAssociationMixin<UserAttributes>;
 }
 type UsersBGModel = typeof Model & {
   new (): UsersBGAttributes;
@@ -53,5 +55,9 @@ export const UsersBrdgames = <UsersBGModel>sequelize.define("Users_BrdGames", {
     }
   }
 });
-User.belongsToMany(BrdGame, { through: UsersBrdgames });
-BrdGame.belongsToMany(User, { through: UsersBrdgames });
+
+BrdGame.belongsToMany(User, {
+  through: UsersBrdgames,
+  foreignKey: "brdGameId"
+});
+User.belongsToMany(BrdGame, { through: UsersBrdgames, foreignKey: "userId" });

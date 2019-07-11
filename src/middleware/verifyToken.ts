@@ -17,6 +17,7 @@ export const verifyToken = (
     console.log("decoded: ", decoded);
     next();
   } catch (error) {
+    console.log("JWT Error: You must be logged in to complete this action");
     return res.status(401).json({
       message: "You must be logged in to complete this action"
     });

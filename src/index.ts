@@ -3,7 +3,6 @@ import dotenv from "dotenv";
 import cors from "cors";
 import { router } from "./auth";
 import { User } from "./database/models/user";
-import { verifyToken } from "./middleware/verifyToken";
 
 dotenv.config();
 

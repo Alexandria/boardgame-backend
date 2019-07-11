@@ -39,12 +39,15 @@ export const BrdGame = <BrdGameModel>sequelize.define("BrdGames", {
     primaryKey: true
   },
   name: { type: DataTypes.STRING, allowNull: false },
-  numOfPlayers: { type: DataTypes.STRING, allowNull: false },
-  playTime: DataTypes.INTEGER,
-  complexity: DataTypes.INTEGER,
+  minPlayers: { type: DataTypes.STRING, allowNull: false },
+  maxPlayers: { type: DataTypes.STRING, allowNull: false },
+  avgPlayTime: DataTypes.INTEGER,
   description: { type: DataTypes.STRING, allowNull: false },
   category: DataTypes.STRING,
-  artist: DataTypes.STRING,
-  designer: DataTypes.STRING,
-  img: DataTypes.STRING
+  minage: DataTypes.STRING,
+  img: DataTypes.STRING,
+  thumbnail: DataTypes.STRING,
+  bgGeekID: DataTypes.INTEGER,
+  createdAt: DataTypes.DATE,
+  updatedAt: DataTypes.DATE
 });
