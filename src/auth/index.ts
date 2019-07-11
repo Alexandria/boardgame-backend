@@ -215,34 +215,47 @@ router.post("/search/addgame/:id", async function(req, res) {
     }
   });
 
-  const {
-    name,
-    minPlayers,
-    maxPlayers,
-    avgPlayTime,
-    description,
-    category,
-    minAge,
-    img,
-    thumbnail,
-    bgGeekID,
-    createdAt,
-    updatedAt
-  } = await createNewGame(req.body.name);
-
   // // if not in bg database add to bgdatabase then add to usersboardgames
-  if (results[0]) {
-    res.send("Game is in the database");
-    //check if this game is appart of the users collection
-    // const collection = await UsersBrdgames.findAll({
-    //   where: {
-    //     userId: req.params.id,
-    //     brdGameId: results[0].brdGameId
-    //   }
-    // });
 
-    // console.log(collection);
+  // if it IS in the local db then check if its already added to the users collection
+  if (results[0]) {
+    // check if this game is appart of the users collection
+    const collection = await UsersBrdgames.findAll({
+      where: {
+        userId: req.params.id,
+        brdGameId: results[0].brdGameId
+      }
+    });
+
+    if (collection[0]) {
+      res.send("Game is already in your collection! ");
+    } else {
+      //if not add to users collection
+      await UsersBrdgames.create({
+        userId: req.params.id,
+        brdGameId: results[0].brdGameId,
+        createdAt: curDateTime,
+        updatedAt: curDateTime
+      });
+      res.send(
+        `Game ${results[0].name} was added to the collection of user ${req.params.id}`
+      );
+    }
   } else {
+    const {
+      name,
+      minPlayers,
+      maxPlayers,
+      avgPlayTime,
+      description,
+      category,
+      minAge,
+      img,
+      thumbnail,
+      bgGeekID,
+      createdAt,
+      updatedAt
+    } = await createNewGame(req.body.id);
     const newGame = await BrdGame.create({
       name: name,
       minPlayers: minPlayers,
@@ -257,6 +270,21 @@ router.post("/search/addgame/:id", async function(req, res) {
       createdAt: createdAt,
       updatedAt: updatedAt
     });
+    const newGameID = await BrdGame.findAll({
+      where: {
+        bgGeekID: req.body.id
+      }
+    });
+    await UsersBrdgames.create({
+      userId: req.params.id,
+      brdGameId: newGameID[0].brdGameId,
+      createdAt: curDateTime,
+      updatedAt: curDateTime
+    });
+
+    res.send(
+      `Game ${name} was added to the collection of user ${req.params.id}`
+    );
   }
 
   console.log(results[0]);

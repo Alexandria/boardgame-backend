@@ -39,7 +39,7 @@ export const UsersBrdgames = <UsersBGModel>sequelize.define("Users_BrdGames", {
   rating: DataTypes.INTEGER,
   isborrowed: DataTypes.BOOLEAN,
   userId: {
-    type: DataTypes.STRING,
+    type: DataTypes.INTEGER,
     // FK relationship(hasMany) with `User`
     references: {
       model: "Users",
@@ -47,7 +47,7 @@ export const UsersBrdgames = <UsersBGModel>sequelize.define("Users_BrdGames", {
     }
   },
   brdGameId: {
-    type: DataTypes.STRING,
+    type: DataTypes.INTEGER,
     // FK relationship(hasMany) with `User`
     references: {
       model: "BrdGames",
@@ -60,4 +60,7 @@ BrdGame.belongsToMany(User, {
   through: UsersBrdgames,
   foreignKey: "brdGameId"
 });
-User.belongsToMany(BrdGame, { through: UsersBrdgames, foreignKey: "userId" });
+User.belongsToMany(BrdGame, {
+  through: UsersBrdgames,
+  foreignKey: "userId"
+});

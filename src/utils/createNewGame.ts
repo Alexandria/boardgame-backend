@@ -3,11 +3,7 @@ import { fetchGameByName } from "./fetchGameByName";
 import xml from "xml-js";
 import { curDateTime } from "./dateTime";
 
-export async function createNewGame(gameName: string) {
-  const XMLResult = await fetchGameByName(gameName);
-
-  const bggId = XMLResult.items.item._attributes.id;
-
+export async function createNewGame(bggId: string) {
   const gameInfo = await fetchGameById(bggId);
 
   // //  BoardGame object
