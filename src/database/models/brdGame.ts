@@ -12,16 +12,17 @@ import { UserAttributes, User } from "./user";
 import { UsersBrdgames } from "./usersBrdgames";
 
 export interface BrdGameAttributes extends Model {
-  brdGameId?: number;
+  brdGameId: number;
   name: string;
-  numOfPlayers: string;
-  playTime?: number;
-  complexity?: number;
+  minPlayer: string;
+  maxPlayer?: string;
+  avgPlayTime?: number;
   description: string;
   category?: string;
-  artist?: string;
-  designer?: string;
+  minAge?: string;
   img?: string;
+  thumbnail?: string;
+  bgGeekId: string;
 
   createdAt: Date;
   updatedAt: Date;
@@ -40,14 +41,14 @@ export const BrdGame = <BrdGameModel>sequelize.define("BrdGames", {
   },
   name: { type: DataTypes.STRING, allowNull: false },
   minPlayers: { type: DataTypes.STRING, allowNull: false },
-  maxPlayers: { type: DataTypes.STRING, allowNull: false },
+  maxPlayers: { type: DataTypes.STRING },
   avgPlayTime: DataTypes.INTEGER,
-  description: { type: DataTypes.STRING, allowNull: false },
+  description: { type: DataTypes.TEXT, allowNull: false },
   category: DataTypes.STRING,
-  minage: DataTypes.STRING,
+  minAge: DataTypes.STRING,
   img: DataTypes.STRING,
   thumbnail: DataTypes.STRING,
-  bgGeekID: DataTypes.INTEGER,
+  bgGeekID: { type: DataTypes.STRING, allowNull: false },
   createdAt: DataTypes.DATE,
   updatedAt: DataTypes.DATE
 });

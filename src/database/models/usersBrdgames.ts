@@ -16,8 +16,8 @@ import { BrdGameAttributes, BrdGame } from "./brdGame";
 export interface UsersBGAttributes extends Model {
   rating?: number;
   isborrowed?: boolean;
-  userId?: number;
-  brdGameId?: number;
+  userId: number;
+  brdGameId: number;
 
   getBg: BelongsToManyGetAssociationsMixin<BrdGameAttributes>; // Note the null assertions!
   addBg: BelongsToManyAddAssociationMixin<BrdGameAttributes, number>;
@@ -39,7 +39,7 @@ export const UsersBrdgames = <UsersBGModel>sequelize.define("Users_BrdGames", {
   rating: DataTypes.INTEGER,
   isborrowed: DataTypes.BOOLEAN,
   userId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.STRING,
     // FK relationship(hasMany) with `User`
     references: {
       model: "Users",
@@ -47,7 +47,7 @@ export const UsersBrdgames = <UsersBGModel>sequelize.define("Users_BrdGames", {
     }
   },
   brdGameId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.STRING,
     // FK relationship(hasMany) with `User`
     references: {
       model: "BrdGames",

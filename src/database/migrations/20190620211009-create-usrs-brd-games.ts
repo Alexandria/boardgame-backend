@@ -26,7 +26,7 @@ export = {
         type: DataTypes.DATE
       },
       userId: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         // FK relationship(hasMany) with `User`
         references: {
           model: "Users",
@@ -34,7 +34,7 @@ export = {
         }
       },
       brdGameId: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         // FK relationship(hasMany) with `User`
         references: {
           model: "BrdGames",
