@@ -16,7 +16,6 @@ export async function fetchGameById(id: string) {
         return xml.xml2js(XMLResult.data, options);
       });
   } catch (err) {
-    console.log("BGG search Error", err);
     return err;
   }
 }

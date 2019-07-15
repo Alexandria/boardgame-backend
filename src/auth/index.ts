@@ -14,7 +14,7 @@ import xml from "xml-js";
 import { fetchGameById } from "../utils/fetchGameById";
 import { QueryInterface } from "sequelize";
 import { curDateTime } from "../utils/dateTime";
-import { createNewGame } from "../utils/createNewGame";
+import { addNewGame } from "../utils/addNewGame";
 
 router.get("/", (req, res) => {
   res.json({
@@ -132,93 +132,21 @@ router.post("/signup", async function(req, res) {
 });
 //allow the user to search for a game by its name
 router.get("/search/addgame/:id", async function(req, res) {
-  //first check to see if the BG is already in the database
-  //const newBoardGame = await createNewGame(req.body.name);
   const result = await fetchGameByName(req.body.name);
-
-  // const jsObject: any = xml.xml2js(XMLResult.data, options);
-
-  // const length = jsObject.items.item.length;
-  // const index = length - 1;
-  // const bggId = jsObject.items.item[index]._attributes.id;
-
   res.status(200).json({
     result: result.items.item,
     userId: req.params.id
   });
-
-  // BrdGame.findAll({
-  //   where: {
-  //     bgGeekID: newBoardGame.bgGeekID
-  //   }
-  // }).then(result => {
-  //   //check if this bg is added to the boardgame database
-  //   if (result[0]) {
-  //     // Check to make sure that the user does not already have this game in thier library
-  //     UsersBrdgames.create({
-  //       userId: req.params.id,
-  //       brdGameId: result[0].brdGameId,
-  //       createdAt: curDateTime,
-  //       updatedAt: curDateTime
-  //     })
-  //       .then(() => {
-  //         res.send(
-  //           `Game in db: Game ${newBoardGame.name} was added for user ${req.params.id}`
-  //         );
-  //       })
-  //       .catch(err => res.send(err));
-  //     // If this is a new boardgame to the database add this to the BrdGame database
-  //   } else {
-  //     BrdGame.create({
-  //       name: name,
-  //       minPlayers: minPlayers,
-  //       maxPlayers: maxPlayers,
-  //       avgPlayTime: avgPlayTime,
-  //       description: description,
-  //       category: category,
-  //       minAge: minAge,
-  //       img: img,
-  //       thumbnail: thumbnail,
-  //       bgGeekID: bgGeekID,
-  //       createdAt: createdAt,
-  //       updatedAt: updatedAt
-  //     })
-  //       .then(() => {
-  //         UsersBrdgames.create({
-  //           userId: req.params.id,
-  //           brdGameId: result[0].brdGameId,
-  //           createdAt: curDateTime,
-  //           updatedAt: curDateTime
-  //         })
-  //           .then(() => {
-  //             res.send(
-  //               `New Boardgame: ${newBoardGame.name} was added to userId ${req.params.id}`
-  //             );
-  //           })
-  //           .catch(err => {
-  //             res.send(err);
-  //           });
-  //       })
-  //       .catch(err => res.send(err));
-  //   }
-  // });
-  //res.send(newBoardGame);
 });
 
 router.post("/search/addgame/:id", async function(req, res) {
-  //perhaps verify if the game is the correct game?
-
-  //check if game is in local database
   const results = await BrdGame.findAll({
     where: {
       bgGeekID: req.body.id
     }
   });
 
-  // // if not in bg database add to bgdatabase then add to usersboardgames
-
-  // if it IS in the local db then check if its already added to the users collection
-  if (results[0]) {
+  if (results.length > 0) {
     // check if this game is appart of the users collection
     const collection = await UsersBrdgames.findAll({
       where: {
@@ -227,7 +155,7 @@ router.post("/search/addgame/:id", async function(req, res) {
       }
     });
 
-    if (collection[0]) {
+    if (collection.length > 0) {
       res.send("Game is already in your collection! ");
     } else {
       //if not add to users collection
@@ -242,52 +170,20 @@ router.post("/search/addgame/:id", async function(req, res) {
       );
     }
   } else {
-    const {
-      name,
-      minPlayers,
-      maxPlayers,
-      avgPlayTime,
-      description,
-      category,
-      minAge,
-      img,
-      thumbnail,
-      bgGeekID,
-      createdAt,
-      updatedAt
-    } = await createNewGame(req.body.id);
-    const newGame = await BrdGame.create({
-      name: name,
-      minPlayers: minPlayers,
-      maxPlayers: maxPlayers,
-      avgPlayTime: avgPlayTime,
-      description: description,
-      category: category,
-      minAge: minAge,
-      img: img,
-      thumbnail: thumbnail,
-      bgGeekID: bgGeekID,
-      createdAt: createdAt,
-      updatedAt: updatedAt
-    });
-    const newGameID = await BrdGame.findAll({
-      where: {
-        bgGeekID: req.body.id
-      }
-    });
+    // If a boardgame more than one listing under the same name.. there needs to be a check for that.
+    const newGameID = await addNewGame(req.body.id);
+
     await UsersBrdgames.create({
       userId: req.params.id,
-      brdGameId: newGameID[0].brdGameId,
+      brdGameId: newGameID,
       createdAt: curDateTime,
       updatedAt: curDateTime
     });
 
     res.send(
-      `Game ${name} was added to the collection of user ${req.params.id}`
+      `Game ${results[0].name} was added to the collection of user ${req.params.id}`
     );
   }
-
-  console.log(results[0]);
 
   res.send("check log");
 });
