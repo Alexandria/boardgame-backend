@@ -12,7 +12,7 @@ export async function fetchGameByName(name: string) {
   try {
     return axios
       .get(
-        `http://www.boardgamegeek.com/xmlapi2/search?query=${name}&type=boardgame&exact=1`
+        `http://www.boardgamegeek.com/xmlapi2/search?query=${name}&type=boardgame`
       )
       .then(XMLResult => {
         return xml.xml2js(XMLResult.data, options);

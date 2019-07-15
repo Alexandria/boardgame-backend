@@ -133,16 +133,22 @@ router.post("/signup", async function(req, res) {
 //allow the user to search for a game by its name
 router.get("/search/addgame/:id", async function(req, res) {
   const result = await fetchGameByName(req.body.name);
+  console.log("Result Length", result.items.length);
+  const game = result.items.item
+    ? result.items.item
+    : `No game found with the name ${req.body.name}`;
   res.status(200).json({
-    result: result.items.item,
+    game,
     userId: req.params.id
   });
 });
 
 router.post("/search/addgame/:id", async function(req, res) {
+  const bgGeekID: string = req.body.bgGeekID;
+  const userId: string = req.params.id;
   const results = await BrdGame.findAll({
     where: {
-      bgGeekID: req.body.id
+      bgGeekID
     }
   });
 
@@ -150,39 +156,35 @@ router.post("/search/addgame/:id", async function(req, res) {
     // check if this game is appart of the users collection
     const collection = await UsersBrdgames.findAll({
       where: {
-        userId: req.params.id,
+        userId,
         brdGameId: results[0].brdGameId
       }
     });
 
-    if (collection.length > 0) {
+    if (collection[0]) {
       res.send("Game is already in your collection! ");
     } else {
       //if not add to users collection
       await UsersBrdgames.create({
-        userId: req.params.id,
+        userId,
         brdGameId: results[0].brdGameId,
         createdAt: curDateTime,
         updatedAt: curDateTime
       });
       res.send(
-        `Game ${results[0].name} was added to the collection of user ${req.params.id}`
+        `Game ${results[0].name} was added to the collection of user ${userId}`
       );
     }
   } else {
-    // If a boardgame more than one listing under the same name.. there needs to be a check for that.
-    const newGameID = await addNewGame(req.body.id);
-
+    const newGameID = await addNewGame(bgGeekID);
+    console.log("NEW Game !!! ", newGameID);
     await UsersBrdgames.create({
-      userId: req.params.id,
+      userId,
       brdGameId: newGameID,
       createdAt: curDateTime,
       updatedAt: curDateTime
     });
-
-    res.send(
-      `Game ${results[0].name} was added to the collection of user ${req.params.id}`
-    );
+    res.send(`A new game was added to the collection of user ${userId}`);
   }
 
   res.send("check log");

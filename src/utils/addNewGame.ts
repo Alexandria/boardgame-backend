@@ -19,6 +19,6 @@ export async function addNewGame(bggId: string) {
     createdAt: curDateTime,
     updatedAt: curDateTime
   });
-
+  console.log();
   return newGame.brdGameId;
 }
