@@ -64,5 +64,3 @@ User.belongsToMany(BrdGame, {
   through: UsersBrdgames,
   foreignKey: "userId"
 });
-
-const foo = new UsersBrdgames();

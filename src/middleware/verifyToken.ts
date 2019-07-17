@@ -11,10 +11,7 @@ export const verifyToken = (
       req.headers.authorization !== undefined
         ? req.headers.authorization.split(" ")[1]
         : " ";
-    console.log("token: ", token);
-    console.log("headers", req.headers.authorization);
     const decoded = jwt.verify(token, "secret");
-    console.log("decoded: ", decoded);
     next();
   } catch (error) {
     console.log("JWT Error: You must be logged in to complete this action");

@@ -7,12 +7,8 @@ import { verifyToken } from "../middleware/verifyToken";
 import { BrdGame } from "../database/models/brdGame";
 import { UsersBrdgames } from "../database/models/usersBrdgames";
 import { sequelize } from "../database/models/index";
-import { func, element } from "prop-types";
 export const router = express.Router();
 import { fetchGameByName } from "../utils/fetchGameByName";
-import xml from "xml-js";
-import { fetchGameById } from "../utils/fetchGameById";
-import { QueryInterface } from "sequelize";
 import { curDateTime } from "../utils/dateTime";
 import { addNewGame } from "../utils/addNewGame";
 
@@ -25,21 +21,6 @@ router.get("/", (req, res) => {
 router.get("/home/:id", verifyToken, async function(req, res) {
   const querySelect = `select *from public."BrdGames" bg left join public."Users_BrdGames" usrbg on usrbg."brdGameId" = bg."brdGameId" where usrbg."userId" = ${req.params.id};`;
   const result = await sequelize.query(querySelect);
-
-  // const result = await BrdGame.findAll({
-  //   include: [
-  //     {
-  //       model: UsersBrdgames,
-  //       through: {
-  //         attributes: ["brdGameId"],
-  //         where: {
-  //           userId: req.params.id
-  //         }
-  //       }
-  //     }
-  //   ]
-  // });
-
   res.status(200).json({ result: result[0] });
 });
 
@@ -70,6 +51,7 @@ router.post("/login", async function(req, res) {
       .then(isPassword => {
         if (isPassword) {
           const token = createTkn(queryResult);
+
           res.status(200).json({
             message: "You are logged in ✅",
             token,
