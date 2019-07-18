@@ -9,7 +9,6 @@ import {
 } from "sequelize";
 import { sequelize } from "./index";
 import { BrdGameAttributes, BrdGame } from "./brdGame";
-import { UsersBrdgames } from "./usersBrdgames";
 
 export interface UserAttributes extends Model {
   userId: number;
