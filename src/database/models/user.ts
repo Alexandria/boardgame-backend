@@ -7,23 +7,30 @@ import {
   BelongsToManyCountAssociationsMixin,
   BelongsToManyCreateAssociationMixin
 } from "sequelize";
-import { sequelize } from "./index";
+import { sequelize } from "../../utils/sequelize";
 import { BrdGameAttributes, BrdGame } from "./brdGame";
+import { UsersBrdgames } from "./usersBrdgames";
 
 export interface UserAttributes extends Model {
-  userId: number;
+  userId?: number;
   email: string;
   password: string;
 
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
+
+  getBrdGame: BelongsToManyGetAssociationsMixin<BrdGameAttributes>; // Note the null assertions!
+  addBrdGame: BelongsToManyAddAssociationMixin<BrdGameAttributes, number>;
+  hasBrdGame: BelongsToManyHasAssociationMixin<BrdGameAttributes, number>;
+  countBrdGame: BelongsToManyCountAssociationsMixin;
+  createBrdGame: BelongsToManyCreateAssociationMixin<BrdGameAttributes>;
 }
 
-export type UserModel = typeof Model & {
+type UserType = typeof Model & {
   new (): UserAttributes;
 };
 
-export const User = <UserModel>sequelize.define("Users", {
+export const User = <UserType>sequelize.define("Users", {
   userId: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -33,3 +40,5 @@ export const User = <UserModel>sequelize.define("Users", {
   email: DataTypes.STRING,
   password: DataTypes.STRING
 });
+
+console.log("UserModel", User);

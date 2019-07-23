@@ -1,10 +1,10 @@
 import express from "express";
 import bcrypt from "bcrypt";
 import { validateLogin } from "../utils/validateLogin";
-import { User } from "../database/models/user";
+import { User, BrdGame } from "../database/models/index";
 import createTkn from "../utils/createTkn";
 import { verifyToken } from "../middleware/verifyToken";
-import { BrdGame } from "../database/models/brdGame";
+//import { BrdGame } from "../database/models/brdGame";
 import { UsersBrdgames } from "../database/models/usersBrdgames";
 import { sequelize } from "../database/models/index";
 export const router = express.Router();
@@ -18,10 +18,24 @@ router.get("/", (req, res) => {
   });
 });
 
-router.get("/home/:id", verifyToken, async function(req, res) {
-  const querySelect = `select *from public."BrdGames" bg left join public."Users_BrdGames" usrbg on usrbg."brdGameId" = bg."brdGameId" where usrbg."userId" = ${req.params.id};`;
-  const result = await sequelize.query(querySelect);
-  res.status(200).json({ result: result[0] });
+router.get("/home/:id", async function(req, res) {
+  // const querySelect = `select *from public."BrdGames" bg left join public."Users_BrdGames" usrbg on usrbg."brdGameId" = bg."brdGameId" where usrbg."userId" = ${req.params.id};`;
+  // const result = await sequelize.query(querySelect);
+  // res.status(200).json({ result: result[0] });
+
+  const result = await BrdGame.findAll({
+    include: [
+      {
+        model: User,
+        as: "User",
+        where: {
+          userId: req.params.id
+        }
+      }
+    ]
+  }).catch(err => console.log("Querry Error", err));
+
+  res.json({ result });
 });
 
 router.post("/login", async function(req, res) {

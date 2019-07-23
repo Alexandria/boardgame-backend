@@ -9,7 +9,8 @@ console.log(PORT, " ", DATABASE);
 module.exports = {
   development: {
     url: `postgres://localhost:${PORT}/${DATABASE}`,
-    dialect: "postgres"
+    dialect: "postgres",
+    password: null
   },
   test: {
     username: "root",

@@ -1,40 +1,18 @@
-import {
-  Model,
-  DataTypes,
-  BelongsToManyGetAssociationsMixin,
-  BelongsToManyAddAssociationMixin,
-  BelongsToManyHasAssociationMixin,
-  BelongsToManyCountAssociationsMixin,
-  BelongsToManyCreateAssociationMixin,
-  BelongsToMany,
-  Association
-} from "sequelize";
-import { sequelize } from "./index";
-import { UserAttributes, User } from "./user";
-import { BrdGameAttributes, BrdGame } from "./brdGame";
+console.log("Top of File");
+import { Model, DataTypes } from "sequelize";
+import { sequelize } from "../../utils/sequelize";
 
+console.log("Below Imports");
 export interface UsersBGAttributes extends Model {
   rating?: number;
   isborrowed?: boolean;
   userId: number;
   brdGameId: number;
-
-  getBg: BelongsToManyGetAssociationsMixin<BrdGameAttributes>; // Note the null assertions!
-  addBg: BelongsToManyAddAssociationMixin<BrdGameAttributes, number>;
-  hasBg: BelongsToManyHasAssociationMixin<BrdGameAttributes, number>;
-  countBg: BelongsToManyCountAssociationsMixin;
-  createBg: BelongsToManyCreateAssociationMixin<BrdGameAttributes>;
-
-  getUser: BelongsToManyGetAssociationsMixin<UserAttributes>; // Note the null assertions!
-  addUser: BelongsToManyAddAssociationMixin<UserAttributes, number>;
-  hasUser: BelongsToManyHasAssociationMixin<UserAttributes, number>;
-  countUser: BelongsToManyCountAssociationsMixin;
-  createUser: BelongsToManyCreateAssociationMixin<UserAttributes>;
 }
 type UsersBGModel = typeof Model & {
   new (): UsersBGAttributes;
 };
-
+console.log("Here!!!");
 export const UsersBrdgames = <UsersBGModel>sequelize.define("Users_BrdGames", {
   rating: DataTypes.INTEGER,
   isborrowed: DataTypes.BOOLEAN,
@@ -55,12 +33,12 @@ export const UsersBrdgames = <UsersBGModel>sequelize.define("Users_BrdGames", {
     }
   }
 });
-
-BrdGame.belongsToMany(User, {
-  through: UsersBrdgames,
-  foreignKey: "brdGameId"
-});
-User.belongsToMany(BrdGame, {
-  through: UsersBrdgames,
-  foreignKey: "userId"
-});
+console.log("USRBG MODEL", UsersBrdgames);
+// BrdGame.belongsToMany(User, {
+//   through: UsersBrdgames,
+//   foreignKey: "brdGameId"
+// });
+// User.belongsToMany(BrdGame, {
+//   through: UsersBrdgames,
+//   foreignKey: "userId"
+// });

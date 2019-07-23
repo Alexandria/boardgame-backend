@@ -5,12 +5,12 @@ import {
   BelongsToManyAddAssociationMixin,
   BelongsToManyHasAssociationMixin,
   BelongsToManyCountAssociationsMixin,
-  BelongsToManyCreateAssociationMixin
+  BelongsToManyCreateAssociationMixin,
+  Sequelize
 } from "sequelize";
-import { sequelize } from "./index";
+import { sequelize } from "../../utils/sequelize";
 import { UserAttributes, User } from "./user";
 import { UsersBrdgames } from "./usersBrdgames";
-
 export interface BrdGameAttributes extends Model {
   brdGameId: number;
   name: string;
@@ -26,6 +26,12 @@ export interface BrdGameAttributes extends Model {
 
   createdAt: Date;
   updatedAt: Date;
+
+  getUser: BelongsToManyGetAssociationsMixin<UserAttributes>; // Note the null assertions!
+  addUser: BelongsToManyAddAssociationMixin<UserAttributes, number>;
+  hasUser: BelongsToManyHasAssociationMixin<UserAttributes, number>;
+  countUser: BelongsToManyCountAssociationsMixin;
+  createUser: BelongsToManyCreateAssociationMixin<UserAttributes>;
 }
 
 type BrdGameModel = typeof Model & {

@@ -9,7 +9,7 @@ export default (queryResult: UserAttributes) => {
     },
     "secret",
     {
-      expiresIn: "60s"
+      expiresIn: "2min" // 4s, 1hr, 2min
     }
   );
 
