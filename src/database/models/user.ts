@@ -8,8 +8,7 @@ import {
   BelongsToManyCreateAssociationMixin
 } from "sequelize";
 import { sequelize } from "../../utils/sequelize";
-import { BrdGameAttributes, BrdGame } from "./brdGame";
-import { UsersBrdgames } from "./usersBrdgames";
+import { BrdGameAttributes } from "./brdGame";
 
 export interface UserAttributes extends Model {
   userId?: number;
@@ -40,5 +39,3 @@ export const User = <UserType>sequelize.define("Users", {
   email: DataTypes.STRING,
   password: DataTypes.STRING
 });
-
-console.log("UserModel", User);

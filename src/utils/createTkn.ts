@@ -1,7 +1,7 @@
 import * as jwt from "jsonwebtoken";
 import { UserAttributes } from "../database/models/user";
 
-export default (queryResult: UserAttributes) => {
+export const createTkn = (queryResult: UserAttributes) => {
   const token = jwt.sign(
     {
       email: queryResult.email,

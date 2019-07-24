@@ -1,17 +1,16 @@
 import express from "express";
 import bcrypt from "bcrypt";
-import { validateLogin } from "../utils/validateLogin";
-import { User, BrdGame } from "../database/models/index";
-import createTkn from "../utils/createTkn";
-import { verifyToken } from "../middleware/verifyToken";
-//import { BrdGame } from "../database/models/brdGame";
-import { UsersBrdgames } from "../database/models/usersBrdgames";
-import { sequelize } from "../database/models/index";
-export const router = express.Router();
-import { fetchGameByName } from "../utils/fetchGameByName";
-import { curDateTime } from "../utils/dateTime";
-import { addNewGame } from "../utils/addNewGame";
+import { User, BrdGame, UsersBrdgames } from "../database/models/index";
+import {
+  fetchGameByName,
+  curDateTime,
+  addNewGame,
+  validateLogin,
+  createTkn
+} from "../utils/index";
+import { where } from "sequelize/types";
 
+export const router = express.Router();
 router.get("/", (req, res) => {
   res.json({
     message: "🗝"
@@ -20,20 +19,20 @@ router.get("/", (req, res) => {
 
 router.get("/home/:id", async function(req, res) {
   // const querySelect = `select *from public."BrdGames" bg left join public."Users_BrdGames" usrbg on usrbg."brdGameId" = bg."brdGameId" where usrbg."userId" = ${req.params.id};`;
-  // const result = await sequelize.query(querySelect);
-  // res.status(200).json({ result: result[0] });
 
   const result = await BrdGame.findAll({
+    attributes: { exclude: ["bgGeekID"] },
     include: [
       {
-        model: User,
-        as: "User",
+        attributes: ["rating", "isborrowed"],
+        model: UsersBrdgames,
+        as: "UrsBrd",
         where: {
           userId: req.params.id
         }
       }
     ]
-  }).catch(err => console.log("Querry Error", err));
+  }).catch(err => res.status(500).json({ err }));
 
   res.json({ result });
 });
@@ -49,37 +48,24 @@ router.post("/login", async function(req, res) {
     where: {
       email: req.body.email
     }
-  })
-    .then(result => {
-      return result[0];
-    })
-    .catch(err => {
-      res.status(404).json({ message: err.message });
-      return null;
-    });
+  });
 
-  if (queryResult) {
-    console.log("QR======>", queryResult.password);
-    bcrypt
-      .compare(req.body.password, queryResult.password)
-      .then(isPassword => {
-        if (isPassword) {
-          const token = createTkn(queryResult);
-
-          res.status(200).json({
-            message: "You are logged in ✅",
-            token,
-            userId: queryResult.userId
-          });
-        } else {
-          res.status(401).json({
-            message: "Auth failed ⛔️"
-          });
-        }
-      })
-      .catch(err => {
-        res.status(404).json({ message: err.message });
+  if (queryResult[0]) {
+    const isPasswordValid = await bcrypt.compare(
+      req.body.password,
+      queryResult[0].password
+    );
+    if (isPasswordValid) {
+      res.status(200).json({
+        message: "You are logged in ✅",
+        token: createTkn(queryResult[0]),
+        userId: queryResult[0].userId
       });
+    } else {
+      res.status(401).json({
+        message: "Auth failed ⛔️"
+      });
+    }
   } else {
     res.status(401).json({
       message: "Failed to login"
@@ -127,7 +113,7 @@ router.post("/signup", async function(req, res) {
     });
 });
 //allow the user to search for a game by its name
-router.get("/search/addgame/:id", async function(req, res) {
+router.get("/search/addgame", async function(req, res) {
   const result = await fetchGameByName(req.body.name);
   console.log("Result Length", result.items.length);
   const game = result.items.item
@@ -139,9 +125,9 @@ router.get("/search/addgame/:id", async function(req, res) {
   });
 });
 
-router.post("/search/addgame/:id", async function(req, res) {
+router.post("/addgame", async function(req, res) {
   const bgGeekID: string = req.body.bgGeekID;
-  const userId: string = req.params.id;
+  const userId: string = req.body.userId;
   const results = await BrdGame.findAll({
     where: {
       bgGeekID
