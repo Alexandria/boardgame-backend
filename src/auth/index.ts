@@ -8,7 +8,6 @@ import {
   validateLogin,
   createTkn
 } from "../utils/index";
-import { where } from "sequelize/types";
 
 export const router = express.Router();
 router.get("/", (req, res) => {
@@ -76,44 +75,34 @@ router.post("/login", async function(req, res) {
 router.post("/signup", async function(req, res) {
   await validateLogin(req.body).catch(() => {
     res.status(401).json({
-      message: "Authorization Faild: Invalid information ⛔️"
+      message:
+        "⛔Authorization Faild: Invalid information . Please enter and email and a password"
     });
   });
 
-  User.findAll({
+  const result = await User.findAll({
     where: {
       email: req.body.email
     }
-  })
-    .then(result => {
-      if (result.length === 0) {
-        bcrypt.hash(req.body.password, 10).then(hash => {
-          User.create({
-            email: req.body.email,
-            password: hash
-          })
-            .then(() => {
-              res.json({
-                message: "✅ User was created!",
-                password: hash
-              });
-            })
-            .catch(errors => res.status(404).json({ message: errors.message }));
-        });
-      } else {
-        res.status(401).json({
-          message: "Email  is already in use."
-        });
-      }
-    })
-    .catch(err => {
-      res.status(401).json({
-        message: err.message
-      });
+  });
+  if (result[0]) {
+    res.status(401).json({
+      message: "Email is already in use."
     });
+  }
+
+  const hash = await bcrypt.hash(req.body.password, 10);
+  await User.create({
+    email: req.body.email,
+    password: hash
+  });
+
+  res.json({
+    message: "✅ User was created!"
+  });
 });
-//allow the user to search for a game by its name
-router.get("/search/addgame", async function(req, res) {
+
+router.get("/addgame/query", async function(req, res) {
   const result = await fetchGameByName(req.body.name);
   console.log("Result Length", result.items.length);
   const game = result.items.item
