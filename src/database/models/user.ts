@@ -9,7 +9,7 @@ import {
 } from "sequelize";
 import { sequelize } from "./index";
 import { BrdGameAttributes, BrdGame } from "./brdGame";
-import { UsersBrdGames } from "./usersBrdgames";
+import { UsersBrdgames } from "./usersBrdgames";
 
 export interface UserAttributes extends Model {
   userId: number;
@@ -18,12 +18,6 @@ export interface UserAttributes extends Model {
 
   createdAt: Date;
   updatedAt: Date;
-
-  getBg: BelongsToManyGetAssociationsMixin<BrdGameAttributes>; // Note the null assertions!
-  addBg: BelongsToManyAddAssociationMixin<BrdGameAttributes, number>;
-  hasBg: BelongsToManyHasAssociationMixin<BrdGameAttributes, number>;
-  countBg: BelongsToManyCountAssociationsMixin;
-  createBg: BelongsToManyCreateAssociationMixin<BrdGameAttributes>;
 }
 
 export type UserModel = typeof Model & {
@@ -40,4 +34,3 @@ export const User = <UserModel>sequelize.define("Users", {
   email: DataTypes.STRING,
   password: DataTypes.STRING
 });
-User.belongsToMany(BrdGame, { through: UsersBrdGames });

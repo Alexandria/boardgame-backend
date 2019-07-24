@@ -8,28 +8,24 @@ import {
   BelongsToManyCreateAssociationMixin
 } from "sequelize";
 import { sequelize } from "./index";
-import { UserAttributes } from "./user";
+import { UserAttributes, User } from "./user";
+import { UsersBrdgames } from "./usersBrdgames";
 
 export interface BrdGameAttributes extends Model {
-  brdGameId?: number;
+  brdGameId: number;
   name: string;
-  numOfPlayers: string;
-  playTime?: number;
-  complexity?: number;
+  minPlayer: string;
+  maxPlayer?: string;
+  avgPlayTime?: number;
   description: string;
   category?: string;
-  artist?: string;
-  designer?: string;
+  minAge?: string;
   img?: string;
+  thumbnail?: string;
+  bgGeekId: string;
 
   createdAt: Date;
   updatedAt: Date;
-
-  getUser: BelongsToManyGetAssociationsMixin<UserAttributes>; // Note the null assertions!
-  addUser: BelongsToManyAddAssociationMixin<UserAttributes, number>;
-  hasUser: BelongsToManyHasAssociationMixin<UserAttributes, number>;
-  countUser: BelongsToManyCountAssociationsMixin;
-  createUser: BelongsToManyCreateAssociationMixin<UserAttributes>;
 }
 
 type BrdGameModel = typeof Model & {
@@ -44,14 +40,15 @@ export const BrdGame = <BrdGameModel>sequelize.define("BrdGames", {
     primaryKey: true
   },
   name: { type: DataTypes.STRING, allowNull: false },
-  numOfPlayers: { type: DataTypes.STRING, allowNull: false },
-  playTime: DataTypes.INTEGER,
-  complexity: DataTypes.INTEGER,
-  description: { type: DataTypes.STRING, allowNull: false },
+  minPlayers: { type: DataTypes.STRING, allowNull: false },
+  maxPlayers: { type: DataTypes.STRING },
+  avgPlayTime: DataTypes.INTEGER,
+  description: { type: DataTypes.TEXT, allowNull: false },
   category: DataTypes.STRING,
-  artist: DataTypes.STRING,
-  designer: DataTypes.STRING,
-  img: DataTypes.STRING
+  minAge: DataTypes.STRING,
+  img: DataTypes.STRING,
+  thumbnail: DataTypes.STRING,
+  bgGeekID: { type: DataTypes.STRING, allowNull: false },
+  createdAt: DataTypes.DATE,
+  updatedAt: DataTypes.DATE
 });
-
-// BrdGame.belongsToMany(User, { through: Users_BrdGames })

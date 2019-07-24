@@ -15,21 +15,20 @@ export = {
         allowNull: false
       },
 
-      numOfPlayers: {
+      minPlayers: {
         type: DataTypes.STRING,
         allowNull: false
       },
-
-      playTime: {
-        type: DataTypes.INTEGER
+      maxPlayers: {
+        type: DataTypes.STRING
       },
 
-      complexity: {
-        type: DataTypes.INTEGER
+      avgPlayTime: {
+        type: DataTypes.STRING
       },
 
       description: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: false
       },
 
@@ -37,18 +36,17 @@ export = {
         type: DataTypes.STRING
       },
 
-      artist: {
-        type: DataTypes.STRING
-      },
-
-      designer: {
+      minAge: {
         type: DataTypes.STRING
       },
 
       img: {
         type: DataTypes.STRING
       },
-
+      thumbnail: {
+        type: DataTypes.STRING
+      },
+      bgGeekID: { type: DataTypes.STRING, allowNull: false },
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE
