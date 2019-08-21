@@ -12,7 +12,7 @@ app.use(cors({ credentials: true }));
 app.use(express.json());
 app.use("/auth", router);
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT | 3001;
 
 app.listen(PORT, () => {
   console.log(`Running on port ${PORT}`);
