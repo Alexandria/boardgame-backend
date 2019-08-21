@@ -9,7 +9,7 @@ export const createTkn = (queryResult: UserAttributes) => {
     },
     "secret",
     {
-      expiresIn: "2min" // 4s, 1hr, 2min
+      expiresIn: "12hr" // 4s, 1hr, 2min
     }
   );
 

@@ -31,7 +31,7 @@ router.get("/home/:id", async function(req, res) {
         }
       }
     ]
-  }).catch(err => res.status(500).json({ err }));
+  });
 
   res.json({ result });
 });
@@ -160,3 +160,5 @@ router.post("/addgame", async function(req, res) {
 
   res.send("check log");
 });
+
+
